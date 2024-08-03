@@ -1,5 +1,5 @@
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { database, imgDB } from "../Config"; // Adjust the import based on your file structure
+import { database, imgDB } from "../Config"; 
 import { collection, addDoc } from "firebase/firestore";
 import "./sell.css";
 import { useState } from "react";
@@ -10,7 +10,7 @@ const SellProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-  const [category, setCategory] = useState(""); // New state for category
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,23 +21,23 @@ const SellProduct = () => {
 
     try {
       if (image) {
-        const imageRef = ref(imgDB, `products/${v4()}_${image.name}`); // Create a reference with a unique path
-        await uploadBytes(imageRef, image); // Upload the image to this reference
-        const imageUrl = await getDownloadURL(imageRef); // Get the download URL of the uploaded image
+        const imageRef = ref(imgDB, `products/${v4()}_${image.name}`); 
+        await uploadBytes(imageRef, image);
+        const imageUrl = await getDownloadURL(imageRef); 
 
         await addDoc(collection(database, "products"), {
           productName,
           description,
           price,
           imageUrl,
-          category, // Include category in the document
+          category,
         });
 
         setProductName("");
         setDescription("");
         setPrice("");
         setImage(null);
-        setCategory(""); // Reset category state
+        setCategory(""); 
         setError(null);
       } else {
         setError("Please select an image.");

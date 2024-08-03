@@ -2,6 +2,7 @@ import Footer from "../Components/Footer";
 import "./home.css";
 import Header from "../Components/Header";
 import Cardd from "../Components/Card";
+import Counter from "../Components/Counter";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <Cardd />
       </section>
       <Footer className="footer" />
+      {/* <Counter/> */}
     </div>
   );
 };

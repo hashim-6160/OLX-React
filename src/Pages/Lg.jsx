@@ -18,7 +18,7 @@ const Login = () => {
       setError("Email and Password are required");
       return false;
     }
-    // Additional email and password validations can be added here
+    // Additional email and password validations
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Invalid email format");
       return false;
@@ -52,7 +52,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Authentication error", error);
-      setError(error.message); // Set the error message to be displayed
+      setError(error.message); 
     }
   };
 

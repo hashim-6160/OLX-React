@@ -1,4 +1,3 @@
-/* General Styles */
 body,
 html {
   margin: 0;
@@ -6,7 +5,6 @@ html {
   font-family: Arial, sans-serif;
 }
 
-/* Header Wrapper */
 .header-wrapper {
   width: 100%;
   border-bottom: 1px solid #ddd;
@@ -14,10 +12,9 @@ html {
   position: sticky;
   top: 0;
   padding-left: 20px;
-  z-index: 1000; /* Higher z-index to ensure header stays on top */
+  z-index: 1000; 
 }
 
-/* Header Container */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -28,14 +25,12 @@ html {
   background-color: rgb(252, 232, 232);
 }
 
-/* Logo */
 .logo h1 {
   margin: 0;
   font-size: 24px;
   color: #002f34;
 }
 
-/* Search Bar */
 .search-bar {
   display: flex;
   align-items: center;
@@ -56,6 +51,7 @@ html {
   border: none;
   outline: none;
   padding: 5px;
+  width: 120px;
 }
 
 .search-input {
@@ -75,7 +71,6 @@ html {
   cursor: pointer;
 }
 
-/* Authentication Buttons */
 .auth-buttons {
   display: flex;
   align-items: center;
@@ -90,6 +85,10 @@ html {
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
+}
+
+.language-select i {
+  margin-left: 5px;
 }
 
 .login-button {
@@ -111,7 +110,6 @@ html {
   cursor: pointer;
 }
 
-/* Navigation */
 nav {
   background-color: #f1f1f1;
   padding: 10px 0;
@@ -134,7 +132,6 @@ nav .categories li a {
   font-weight: bold;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
@@ -143,6 +140,7 @@ nav .categories li a {
 
   .search-bar {
     margin: 10px 0;
+    width: 100%;
   }
 
   .auth-buttons {
@@ -154,5 +152,29 @@ nav .categories li a {
   .login-button,
   .sell-button {
     margin: 5px 0;
+    width: 100%;
+  }
+
+  .language-select {
+    justify-content: center;
+  }
+
+  .sell-button {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .location-input {
+    width: 100%;
   }
 }

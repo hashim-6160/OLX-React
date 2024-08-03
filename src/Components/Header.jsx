@@ -1,11 +1,11 @@
+import { useContext } from "react";
 import { logout } from "../Config";
 import "./header.css";
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Config";
-import { useState } from "react";
+import { AppContext } from "../DataProvider";
 
 const Header = () => {
+  const { name } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
@@ -25,7 +25,7 @@ const Header = () => {
             className="search-input"
           />
           <button type="button" className="search-button">
-            <img src="src\assets\search.svg" alt="" />
+            <img src="src/assets/search.svg" alt="" />
           </button>
         </div>
         <div className="auth-buttons">
@@ -33,10 +33,14 @@ const Header = () => {
             <span>ENGLISH</span>
             <i className="fa fa-chevron-down" aria-hidden="true"></i>
           </div>
+          <div>
+            <h3>{name}</h3>
+          </div>
           <button
             className="login-button"
             onClick={() => {
               logout();
+              navigate("/login");
             }}
           >
             Logout

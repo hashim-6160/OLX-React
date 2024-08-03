@@ -1,9 +1,8 @@
-/* General Styles */
 
 .home {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+  min-height: 100vh; 
 }
 
 .cards {
@@ -23,7 +22,7 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 200px; /* Adjust width as needed */
+  width: 200px; 
 }
 
 .footer {
