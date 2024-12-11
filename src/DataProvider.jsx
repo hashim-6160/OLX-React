@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { database, auth } from "./Config";
-import { collection, count, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const AppContext = createContext();
 export const useDB = () => useContext(AppContext);
@@ -10,10 +11,27 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [counter, setCounter] = useState(0);
+  const [authInitialized, setAuthInitialized] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setAuthInitialized(true);
+      if (user) {
+        console.log("Auth state changed - User logged in:", user.email);
+      } else {
+        console.log("Auth state changed - User logged out");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!authInitialized) return; // Wait for auth to initialize
+      
       try {
+        console.log("Fetching user data, auth state:", auth.currentUser?.email);
         const querySnapshot = await getDocs(collection(database, "user"));
         const dataList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -35,7 +53,8 @@ const DataProvider = ({ children }) => {
     };
 
     fetchData();
-  });
+  }, [authInitialized]);
+
 
   const increment = () => setCounter(counter + 1);
   const decrement = () => setCounter(counter - 1);

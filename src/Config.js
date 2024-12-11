@@ -22,39 +22,46 @@ export const database = getFirestore(app);
 export const imgDB = getStorage(app);
 const auth = getAuth(app);
 
-const signup = async (name, email, password) => {
+const login = async (email, password) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await addDoc(collection(database, "user"), {
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email,
-    });
-    return user;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("Login successful - User:", userCredential.user.email);
+    return userCredential.user;
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    console.error("Login error:", error);
+    throw error;
   }
 };
 
-const login = async (email, password) => {
+const signup = async (name, email, password) => {
   try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    return res.user;
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log("Signup successful - User:", user.email);
+    
+    // Add user to Firestore
+    await addDoc(collection(database, "user"), {
+      uid: user.uid,
+      name,
+      email,
+      authProvider: "local",
+      createdAt: new Date().toISOString()
+    });
+    
+    return user;
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    console.error("Signup error:", error);
+    throw error;
   }
 };
 
 const logout = async () => {
   try {
     await signOut(auth);
+    console.log("Logout successful");
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    console.error("Logout error:", error);
+    throw error;
   }
 };
 

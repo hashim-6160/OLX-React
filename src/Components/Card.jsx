@@ -1,31 +1,55 @@
 import "./card.css";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { database } from "../Config";
+import { database, auth } from "../Config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Cardd = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [authInitialized, setAuthInitialized] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setAuthInitialized(true);
+      console.log("Card auth state:", user ? "Authenticated" : "Not authenticated");
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!authInitialized) return; // Wait for auth to initialize
+      
       setLoading(true);
       try {
+        console.log("Fetching products, auth state:", auth.currentUser?.email);
+        
         const querySnapshot = await getDocs(collection(database, "products"));
-        const productsList = querySnapshot.docs.map((doc) => doc.data());
+        const productsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("Fetched products:", productsList);
         setProducts(productsList);
         setError(null);
       } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Error fetching products. Please try again.");
+        console.error("Error details:", {
+          message: err.message,
+          code: err.code,
+          stack: err.stack,
+          auth: auth.currentUser ? "Authenticated" : "Not authenticated"
+        });
+        setError(`Error fetching products: ${err.message}`);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [authInitialized]);
 
   if (loading) {
     return <p>Loading...</p>;
